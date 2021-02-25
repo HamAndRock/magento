@@ -1,23 +1,40 @@
 <template>
     <div>
-        <CategoryMenu :level="0" :categories="categories"></CategoryMenu>
 
-        <hr class="my-2">
+        <v-container>
+            <v-row>
+                <v-col cols="12" md="3">
+                    <CategoryMenu :level="0" :categories="categories"></CategoryMenu>
+                </v-col>
+                <v-col cols="12" md="9">
+
+                    <v-row>
+                        <v-col sm="6" md="4" v-for="product in products.items" :key="product.uid">
+                            <v-card class="mb-5 mx-2 w-25"  elevation="5">
+                                <v-img :src="product.image.url"/>
+                                <v-card-title>{{ product.name }}</v-card-title>
+                                <v-card-actions class="mx-2">
+                                    <div>
+                                        {{product.price_range.minimum_price.final_price.value}}
+                                        {{product.price_range.minimum_price.final_price.currency}}
+                                    </div>
+                                    <v-btn class="ml-auto" color="success">BUY</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-col>
+                    </v-row>
 
 
-        <div class="d-flex flex-wrap justify-space-between">
-            <v-card class="mb-5 mx-2 w-25" v-for="product in products.items" :key="product.uid">
-                <v-img height="150" :src="product.image.url" />
-                <v-card-title>{{ product.name }}</v-card-title>
-            </v-card>
-        </div>
+                    <v-pagination
+                        @input="onPageChange"
+                        v-model.number="page"
+                        :length="products.page_info.total_pages"
+                    ></v-pagination>
 
+                </v-col>
+            </v-row>
+        </v-container>
 
-        <v-pagination
-            @input="onPageChange"
-            v-model.number="page"
-            :length="products.page_info.total_pages"
-        ></v-pagination>
 
     </div>
 </template>
@@ -25,12 +42,12 @@
 
 <script lang="ts">
 
-import { Component, Vue, } from 'nuxt-property-decorator'
+import {Component, Vue,} from 'nuxt-property-decorator'
 import CategoryMenu from '~/components/CategoryMenu.vue';
 
 import productByCategory from '~/apollo/queries/products/productByCategory.gql'
 import allCategories from '~/apollo/queries/category/allCategories.gql'
-import { CategoryResult, Products } from '~/types/types';
+import {CategoryResult, Products} from '~/types/types';
 
 @Component({
     apollo: {
@@ -65,7 +82,8 @@ export default class Index extends Vue {
     }
 
     onPageChange(page: number) {
-        this.$router.push({query: {page: page as unknown as string}})
+        window.location.search = `page=${page}`
+        // this.$router.push({query: {page: page as unknown as string}}) CORS not working
     }
 
 }

@@ -4,19 +4,19 @@ query AllCategories {
     }) {
         total_count
         items {
-            uid
+            id: uid
             level
             name
             path
             children_count
             children {
-                uid
+                id: uid
                 level
                 name
                 path
                 children_count
                 children {
-                    uid
+                    id: uid
                     level
                     name
                     path

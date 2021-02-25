@@ -48,7 +48,7 @@ export default {
     apollo: {
         clientConfigs: {
             default: {
-                httpEndpoint: 'https://venia.magento.com/graphql',
+                httpEndpoint: process.env.MAGENTO_URL,
                 httpLinkOptions: {
                     credentials: 'same-origin'
                 },

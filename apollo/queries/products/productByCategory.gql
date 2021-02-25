@@ -3,12 +3,21 @@ query ProductByCategory($categoryUID: String, $currentPage: Int) {
         filter: {
             category_uid: {eq: $categoryUID}
         },
+        pageSize: 10,
         currentPage: $currentPage
     ) {
         total_count
         items {
             name,
             uid,
+            price_range {
+                minimum_price {
+                    final_price {
+                        value
+                        currency
+                    }
+                }
+            }
             image {
                 url
             }
